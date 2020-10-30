@@ -1,8 +1,6 @@
 package com.lathuys.studia.bmi
 
 import android.content.Context
-import android.content.res.Resources
-import android.util.Log
 import androidx.core.content.ContextCompat.getColor
 import com.lathuys.studia.R
 

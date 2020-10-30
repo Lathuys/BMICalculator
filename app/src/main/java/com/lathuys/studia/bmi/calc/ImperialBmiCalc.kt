@@ -1,7 +1,5 @@
 package com.lathuys.studia.bmi.calc
 
-import android.content.Context
-import com.lathuys.studia.R
 import java.util.*
 import kotlin.math.pow
 

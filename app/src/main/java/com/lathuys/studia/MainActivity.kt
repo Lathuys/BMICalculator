@@ -2,25 +2,25 @@ package com.lathuys.studia
 
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.lathuys.studia.bmi.BmiHelper
+import com.lathuys.studia.bmi.calc.IBmiCalc
+import com.lathuys.studia.bmi.calc.ImperialBmiCalc
+import com.lathuys.studia.bmi.calc.MetricalBmiCalc
 import com.lathuys.studia.databinding.ActivityMainBinding
-import com.lathuys.studia.bmi.*
-import com.lathuys.studia.bmi.calc.*
-import com.lathuys.studia.bmi.history.HistoryEntry
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private var currentCalc: IBmiCalc = MetricalBmiCalc()
-    private var bmiValue: Float = -1.0f
+    private var bmiValue = -1.0f
 
     companion object {
         const val CALC: String = "BmiCalcName"
@@ -55,12 +55,12 @@ class MainActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
 
-        when (savedInstanceState?.getString(CALC)) {
+        when (savedInstanceState.getString(CALC)) {
             CALC_METRIC -> changeToMetrical()
             CALC_IMPERIAL -> changeToImperial()
         }
 
-        bmiValue = savedInstanceState?.getFloat(BMI_VALUE)
+        bmiValue = savedInstanceState.getFloat(BMI_VALUE)
 
         bmiTV.text = savedInstanceState.getString(BMI_TV_CONTENT)
         bmiTV.setTextColor(savedInstanceState.getInt(BMI_TV_COLOR))
@@ -105,12 +105,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun count(view: View) {
-        Log.d("test", "test");
+        Log.d("test", "test")
         binding.apply {
             var problem = false
 
-            var height: Float = 0.0f
-            var mass: Float = 0.0f
+            var height = 0.0f
+            var mass = 0.0f
 
             when {
                 heightET.text.isBlank() -> {
@@ -158,7 +158,14 @@ class MainActivity : AppCompatActivity() {
                     bmiTV.text = "%.2f".format(Locale.ENGLISH, bmiValue)
 
                     bmiTV.setTextColor(BmiHelper.getBmiColor(this@MainActivity, bmiValue))
-                    addResultToHistory(currentCalc.createSerial(height, mass, bmiValue, LocalDate.now().toString()))
+                    addResultToHistory(
+                        currentCalc.createSerial(
+                            height,
+                            mass,
+                            bmiValue,
+                            LocalDate.now().toString()
+                        )
+                    )
                 }
                 else -> {
                     bmiTV.text = getString(R.string.empty_value)
@@ -170,23 +177,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun addResultToHistory(serial: String)
-    {
-        var calc: String
-        when (currentCalc) {
-            is MetricalBmiCalc -> {
-                calc = CALC_METRIC
-            }
-            is ImperialBmiCalc -> {
-                calc = CALC_IMPERIAL
-            }
-        }
-
+    private fun addResultToHistory(serial: String) {
         val sharedPreferences: SharedPreferences = getSharedPreferences(BmiHelper.HISTORY_PREF, 0)
         sharedPreferences.edit().apply {
-            for (i: Int in (BmiHelper.HISTORY_MAX - 2) downTo 0)
-            {
-                putString(BmiHelper.HISTORY_PREFIX + (i + 1).toString(), sharedPreferences.getString(BmiHelper.HISTORY_PREFIX + i.toString(), null))
+            for (i: Int in (BmiHelper.HISTORY_MAX - 2) downTo 0) {
+                putString(
+                    BmiHelper.HISTORY_PREFIX + (i + 1).toString(),
+                    sharedPreferences.getString(BmiHelper.HISTORY_PREFIX + i.toString(), null)
+                )
             }
             putString(BmiHelper.HISTORY_PREFIX + "0", serial)
             apply()

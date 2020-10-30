@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_history.*
 import java.util.ArrayList
 
 class HistoryActivity : AppCompatActivity() {
-    lateinit var binding: ActivityHistoryBinding
+    private lateinit var binding: ActivityHistoryBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager

@@ -10,7 +10,7 @@ import java.lang.Exception
 import java.util.*
 
 class BmiDetailsActivity : AppCompatActivity() {
-    lateinit var binding: ActivityBmiDetailsBinding
+    private lateinit var binding: ActivityBmiDetailsBinding
     private var bmiValue: Float = -1.0f
 
     companion object {
@@ -50,7 +50,7 @@ class BmiDetailsActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
 
-        bmiValue = savedInstanceState?.getFloat(BMI_VALUE)
+        bmiValue = savedInstanceState.getFloat(BMI_VALUE)
         setData()
     }
 

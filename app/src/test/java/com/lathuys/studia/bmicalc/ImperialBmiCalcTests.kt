@@ -4,7 +4,7 @@ import com.lathuys.studia.bmi.calc.ImperialBmiCalc
 import org.junit.Assert
 import org.junit.Test
 
-class ImperialBmiCal_UnitTests {
+class ImperialBmiCalcTests {
     private val ibc = ImperialBmiCalc()
 
     @Test

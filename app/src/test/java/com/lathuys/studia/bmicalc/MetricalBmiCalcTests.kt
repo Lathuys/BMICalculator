@@ -5,7 +5,7 @@ import org.junit.Test
 
 import org.junit.Assert.*
 
-class MetricalBmiCalc_UnitTests {
+class MetricalBmiCalcTests {
     private val mbc = MetricalBmiCalc()
 
     @Test
